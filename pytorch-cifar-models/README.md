@@ -22,7 +22,8 @@ to train DenseNet on cifar(10 or 100), you need at least 4 K40 gpus.
 1. Clone this repository
 
 ```
-git clone https://github.com/junyuseu/pytorch-cifar-models.git
+git clone https://github.com/Evergreen0929/Mid-Term-Project.git  
+cd ./pytorch-cifar-models
 ```
 
 In this project, the network structure is defined in the models folder, the script ```gen_mean_std.py``` is used to calculate
