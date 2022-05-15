@@ -33,7 +33,7 @@ the mean and standard deviation value of the dataset.
 In the ```main.py```, you can specify the network you want to train(for example):
 
 ```
-model = resnet20_cifar(num_classes=100)
+model = convnext_small_cifar(num_classes=100)
 ...
 fdir = 'result/convnext_small_cifar100'
 ```
