@@ -3,15 +3,19 @@
 ## Introduction
 Reimplement state-of-the-art CNN models in cifar dataset with PyTorch, now including:
 
-1.[ResNet](https://arxiv.org/abs/1512.03385v1)
+1.[ConvNeXt](https://arxiv.org/abs/2201.03545)
 
-2.[PreActResNet](https://arxiv.org/abs/1603.05027v3)
+2.[ResNet](https://arxiv.org/abs/1512.03385v1)
 
-3.[WideResNet](https://arxiv.org/abs/1605.07146v4)
+3. Other derivatives including: 
 
-4.[ResNeXt](https://arxiv.org/abs/1611.05431v2)
+        [PreActResNet](https://arxiv.org/abs/1603.05027v3)
 
-5.[DenseNet](https://arxiv.org/abs/1608.06993v4)
+        [WideResNet](https://arxiv.org/abs/1605.07146v4)
+
+        [ResNeXt](https://arxiv.org/abs/1611.05431v2)
+
+        [DenseNet](https://arxiv.org/abs/1608.06993v4)
 
 other results will be added later.
 
