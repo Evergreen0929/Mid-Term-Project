@@ -1,5 +1,5 @@
-# Mid-Term-Project
-The mid-term PJ assigned by Prof. Zhang Li, including image classification and object detection. 
+# Mid-Term-Project and Final-Term-Project
+Code for mid-term and final-term PJ assigned by Prof. Zhang Li, including image classification, object detection and semantic segmentation.. 
 
 ## Image Classification
 The introduction of image classification lab can be found [here](https://github.com/Evergreen0929/Mid-Term-Project/tree/main/pytorch-cifar-models). Code in `./pytorch-cifar-models`.
