@@ -12,5 +12,5 @@ Introduction of Faster-RCNN can be found [here](https://github.com/misads/easy_d
 
 Pretrained models can be found [here](https://pan.baidu.com/s/11P2oUXbTZlN0XAuksBDExA), extracting code: `ny3w`.
 
-## Connection
+## Contact
 19307140032@fudan.edu.cn
