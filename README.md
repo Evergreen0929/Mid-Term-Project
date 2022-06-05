@@ -12,5 +12,9 @@ Introduction of Faster-RCNN can be found [here](https://github.com/misads/easy_d
 
 Object detection models can be found [here](https://pan.baidu.com/s/1EGOhBNv_k0YCE1qE187cBw), extracting code: `uieb`. (Update! models train from scratch and finetuned with Imagenet and Coco pretrained backbone respectively.)
 
+## Semantic Segmentation
+Inference with HRNet-w48+OCR pretrained on Cityscapes. Code in `./HR-Net-Semantic-Segmentation`.  
+Introduction of HRNet+OCR series can be found here.
+
 ## Contact
 19307140032@fudan.edu.cn
