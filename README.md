@@ -14,7 +14,7 @@ Object detection models can be found [here](https://pan.baidu.com/s/1EGOhBNv_k0Y
 
 ## Semantic Segmentation
 Inference with HRNet-w48+OCR pretrained on Cityscapes. Code in `./HR-Net-Semantic-Segmentation`.  
-Introduction of HRNet+OCR series can be found here.
+Introduction of HRNet+OCR series can be found [here](https://github.com/Evergreen0929/Mid-Term-Project/tree/main/HR-Net-Semantic-Segmentation).
 
 ## Contact
 19307140032@fudan.edu.cn
