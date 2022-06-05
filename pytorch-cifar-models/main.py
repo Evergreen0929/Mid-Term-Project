@@ -18,25 +18,31 @@ from cutmix import cutmix_data
 
 from models import *
 from models.convnext import ConvNeXt
+from models.SwinTransformer import SwinTransformer, load_pretrained
 
 from tensorboardX import SummaryWriter
 
 parser = argparse.ArgumentParser(description='PyTorch Cifar10 Training')
 parser.add_argument('--epochs', default=200, type=int, metavar='N', help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N', help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=128, type=int, metavar='N', help='mini-batch size (default: 128),only used for train')
+parser.add_argument('-b', '--batch-size', default=128, type=int, metavar='N',
+                    help='mini-batch size (default: 128),only used for train')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float, metavar='LR', help='initial learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, metavar='M', help='momentum')
-parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float, metavar='W', help='weight decay (default: 1e-4)')
+parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float, metavar='W',
+                    help='weight decay (default: 1e-4)')
 parser.add_argument('--print-freq', '-p', default=10, type=int, metavar='N', help='print frequency (default: 10)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH', help='path to latest checkpoint (default: none)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true', help='evaluate model on validation set')
-parser.add_argument('-ct', '--cifar-type', default='100', type=int, metavar='CT', help='10 for cifar10,100 for cifar100 (default: 10)')
-parser.add_argument('--aug_choice', default='None', type=str, choices=('None', 'mixup', 'cutout', 'cutmix', 'all'), help='choices for data augmentation')
+parser.add_argument('-ct', '--cifar-type', default='100', type=int, metavar='CT',
+                    help='10 for cifar10,100 for cifar100 (default: 10)')
+parser.add_argument('--aug_choice', default='None', type=str, choices=('None', 'mixup', 'cutout', 'cutmix', 'all'),
+                    help='choices for data augmentation')
 parser.add_argument('--alpha', default=0.2, type=float, help='ratio of mixture')
 parser.add_argument('--aug_ratio', default=0.5, type=float, help='ratio of augmented data')
 
 best_prec = 0
+
 
 def main():
     global args, best_prec
@@ -49,14 +55,29 @@ def main():
         # model can be set to anyone that I have defined in models folder
         # note the model should match to the cifar type !
 
-        #model = resnet20_cifar()
+        # model = resnet20_cifar()
         # model = resnet32_cifar()
         # model = resnet44_cifar()
         # model = resnet110_cifar()
         # model = preact_resnet110_cifar()
 
         # model = create_RepLKNet31T(num_classes=100)
-        model = convnext_small(num_classes=100, pretrained=True, in_22k=True)
+        # model = convnext_small(num_classes=100, pretrained=True, in_22k=True)
+        model = SwinTransformer(img_size=224,
+                                patch_size=4,
+                                in_chans=3,
+                                num_classes=100,
+                                embed_dim=96,
+                                depths=[2, 2, 18, 2],
+                                num_heads=[3, 6, 12, 24],
+                                window_size=7,
+                                mlp_ratio=4.,
+                                qkv_bias=True,
+                                drop_rate=0.0,
+                                drop_path_rate=0.3,
+                                ape=False,
+                                patch_norm=True)
+        load_pretrained('./swin_small_patch4_window7_224_22k.pth', model)
 
         # model = resnet164_cifar(num_classes=100)
         # model = resnet1001_cifar(num_classes=100)
@@ -66,13 +87,13 @@ def main():
         # model = wide_resnet_cifar(depth=26, width=10, num_classes=100)
 
         # model = resneXt_cifar(depth=29, cardinality=16, baseWidth=64, num_classes=100)
-        
-        #model = densenet_BC_cifar(depth=190, k=40, num_classes=100)
+
+        # model = densenet_BC_cifar(depth=190, k=40, num_classes=100)
 
         # mkdir a new folder to store the checkpoint and best model
         if not os.path.exists('result'):
             os.makedirs('result')
-        fdir = 'result/convnext_small_difar100_{}_{}'.format(args.aug_choice, args.aug_ratio)
+        fdir = 'result/swinT_small_cifar100_{}_{}_224'.format(args.aug_choice, args.aug_ratio)
         if not os.path.exists(fdir):
             os.makedirs(fdir)
 
@@ -85,7 +106,7 @@ def main():
             model_type = 2
         elif isinstance(model, (ResNeXt_Cifar, DenseNet_Cifar)):
             model_type = 3
-        elif isinstance(model, (RepLKNet, ConvNeXt)):
+        elif isinstance(model, (RepLKNet, ConvNeXt, SwinTransformer)):
             model_type = 4
         else:
             print('model type unrecognized...')
@@ -133,7 +154,8 @@ def main():
                 normalize,
             ]))
 
-        trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
+        trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
+                                                  num_workers=2)
 
         test_dataset = torchvision.datasets.CIFAR10(
             root='./data',
@@ -154,7 +176,7 @@ def main():
                 train=True,
                 download=True,
                 transform=transforms.Compose([
-                    transforms.RandomCrop(32, padding=4),
+                    transforms.Resize([224, 224]),
                     transforms.RandomHorizontalFlip(),
                     transforms.ToTensor(),
                     normalize,
@@ -165,20 +187,22 @@ def main():
                 train=True,
                 download=True,
                 transform=transforms.Compose([
-                    transforms.RandomCrop(32, padding=4),
+                    transforms.Resize([224, 224]),
                     Cutout(p=args.aug_ratio),
                     transforms.RandomHorizontalFlip(),
                     transforms.ToTensor(),
                     normalize,
                 ]))
 
-        trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
+        trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
+                                                  num_workers=2)
 
         test_dataset = torchvision.datasets.CIFAR100(
             root='./data',
             train=False,
             download=True,
             transform=transforms.Compose([
+                transforms.Resize([224, 224]),
                 transforms.ToTensor(),
                 normalize,
             ]))
@@ -200,7 +224,7 @@ def main():
 
         # remember best precision and save checkpoint
         is_best = prec > best_prec
-        best_prec = max(prec,best_prec)
+        best_prec = max(prec, best_prec)
         save_checkpoint({
             'epoch': epoch + 1,
             'state_dict': model.state_dict(),
@@ -213,6 +237,7 @@ def main():
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
+
     def __init__(self):
         self.reset()
 
@@ -228,6 +253,7 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
+
 class DeNormalize(object):
     def __init__(self, mean_std=([0.507, 0.487, 0.441], [0.267, 0.256, 0.276])):
         self.mean, self.std = mean_std
@@ -236,6 +262,7 @@ class DeNormalize(object):
         for t, m, s in zip(tensor, self.mean, self.std):
             t.mul_(s).add_(m)
         return tensor
+
 
 def train(trainloader, model, criterion, optimizer, epoch, writer):
     batch_time = AverageMeter()
@@ -291,12 +318,13 @@ def train(trainloader, model, criterion, optimizer, epoch, writer):
                   'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
                   'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                   'Prec {top1.val:.3f}% ({top1.avg:.3f}%)'.format(
-                   epoch, i, len(trainloader), batch_time=batch_time,
-                   data_time=data_time, loss=losses, top1=top1))
+                epoch, i, len(trainloader), batch_time=batch_time,
+                data_time=data_time, loss=losses, top1=top1))
 
     writer.add_scalar('train_loss', losses.avg, epoch)
     writer.add_scalar('train_acc', top1.avg, epoch)
-    writer.add_image('image({})'.format(args.aug_choice), DeNormalize()(torch.nn.UpsamplingBilinear2d(scale_factor=4)(input)[0]), epoch)
+    writer.add_image('image({})'.format(args.aug_choice),
+                     DeNormalize()(torch.nn.UpsamplingBilinear2d(scale_factor=4)(input)[0]), epoch)
 
 
 def validate(val_loader, model, criterion):
@@ -327,11 +355,11 @@ def validate(val_loader, model, criterion):
 
             if i % args.print_freq == 0:
                 print('Test: [{0}/{1}]\t'
-                  'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                  'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                  'Prec {top1.val:.3f}% ({top1.avg:.3f}%)'.format(
-                   i, len(val_loader), batch_time=batch_time, loss=losses,
-                   top1=top1))
+                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+                      'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
+                      'Prec {top1.val:.3f}% ({top1.avg:.3f}%)'.format(
+                    i, len(val_loader), batch_time=batch_time, loss=losses,
+                    top1=top1))
 
     print(' * Prec {top1.avg:.3f}% '.format(top1=top1))
 
@@ -392,6 +420,6 @@ def accuracy(output, target, topk=(1,)):
     return res
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
 
