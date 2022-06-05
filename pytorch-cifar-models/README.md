@@ -3,7 +3,7 @@
 ## Introduction
 Reimplement state-of-the-art CNN models in cifar dataset with PyTorch, now including:
 
-1.[ConvNeXt](https://arxiv.org/abs/2201.03545)
+1.[ConvNeXt](https://arxiv.org/abs/2201.03545) & SwinTransformer
 
 2.[ResNet](https://arxiv.org/abs/1512.03385v1)
 
