@@ -16,5 +16,8 @@ Object detection models can be found [here](https://pan.baidu.com/s/1EGOhBNv_k0Y
 Inference with HRNet-w48+OCR pretrained on Cityscapes. Code in `./HR-Net-Semantic-Segmentation`.  
 Introduction of HRNet+OCR series can be found [here](https://github.com/Evergreen0929/Mid-Term-Project/tree/main/HR-Net-Semantic-Segmentation).
 
+To inference single image, run: `python tools/inference.py --cfg experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml`
+To inference single video, run: `python tools/inference_video.py --cfg experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml`
+
 ## Contact
 19307140032@fudan.edu.cn
