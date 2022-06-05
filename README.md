@@ -19,7 +19,9 @@ Introduction of HRNet+OCR series can be found [here](https://github.com/Evergree
 To inference single image, run:   
 `python tools/inference.py --cfg experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml`  
 To inference single video, run:   
-`python tools/inference_video.py --cfg experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml`  
+`python tools/inference_video.py --cfg experiments/cityscapes/seg_hrnet_ocr_w48_train_512x1024_sgd_lr1e-2_wd5e-4_bs_12_epoch484.yaml` 
+
+My predictions of videos can be found [here](https://pan.baidu.com/s/1lj2LKDb_wQwbPeEEUDwjrQ), extracting code: `xspo`  
 
 ## Contact
 19307140032@fudan.edu.cn
